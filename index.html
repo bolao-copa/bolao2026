@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Copa do Mundo 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#001F5C;--red:#E3001B;--gold:#FFB81C;--sel:#009B4D;--ltblue:#00A3E0}
+body{font-family:'Nunito',system-ui,sans-serif;background:#f5f5f5;min-height:100vh;padding:16px}
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+.page{max-width:660px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#001040 0%,#001F5C 45%,#002878 100%);border-radius:16px;margin-bottom:0;overflow:hidden;position:relative;padding:28px 24px 22px}
+.hero-bg{position:absolute;inset:0;opacity:.06;background-image:repeating-linear-gradient(60deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.hero-stripe{position:absolute;bottom:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#E3001B 0%,#FFB81C 33%,#009B4D 66%,#00A3E0 100%)}
+.hero-top{display:flex;align-items:center;gap:16px;position:relative;z-index:1}
+.hero-pretitle{font-size:10px;letter-spacing:.15em;color:#00A3E0;font-weight:700;text-transform:uppercase;margin-bottom:4px}
+.hero-title{font-family:'Impact','Arial Black',sans-serif;font-size:36px;line-height:.95;color:#fff;letter-spacing:.04em}
+.hero-title span{color:#FFB81C}
+.hero-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:5px}
+.hero-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);position:relative;z-index:1}
+.hero-dates{font-size:11px;color:rgba(255,255,255,.5);text-align:right}
+.prog-wrap{background:linear-gradient(135deg,#001040,#001F5C);padding:12px 20px;border-radius:0 0 12px 12px;margin-bottom:16px}
+.prog-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.15);overflow:hidden;margin-bottom:6px}
+.prog-fill{height:100%;background:linear-gradient(90deg,#009B4D,#00A3E0);border-radius:3px;transition:width .4s}
+.prog-row{display:flex;justify-content:space-between}
+.prog-lbl{font-size:11px;color:rgba(255,255,255,.6)}
+.card{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.stitle{font-family:'Impact','Arial Black',sans-serif;font-size:26px;letter-spacing:.06em;color:var(--navy);margin-bottom:4px}
+.stitle-bar{height:3px;width:48px;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:2px;margin-bottom:1.25rem}
+.gc{background:#fff;border:1px solid #e0e0e0;border-radius:12px;margin-bottom:1rem;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.gh{padding:10px 16px;font-size:11px;font-weight:800;letter-spacing:.1em;display:flex;align-items:center;gap:8px;text-transform:uppercase}
+.gh-A,.gh-B{background:linear-gradient(90deg,#001F5C,#0030AA);color:#fff}
+.gh-C,.gh-D{background:linear-gradient(90deg,#009B4D,#00CC66);color:#fff}
+.gh-E,.gh-F{background:linear-gradient(90deg,#E3001B,#FF4444);color:#fff}
+.gh-G,.gh-H{background:linear-gradient(90deg,#FFB81C,#FFA000);color:#001F5C}
+.gh-I,.gh-J{background:linear-gradient(90deg,#00A3E0,#0077BB);color:#fff}
+.gh-K,.gh-L{background:linear-gradient(90deg,#7B2FBE,#9B4FDE);color:#fff}
+.mr{display:flex;align-items:center;padding:10px 16px;border-top:1px solid #efefef;gap:10px;background:#fff}
+.tn{flex:1;font-size:16px;color:#1a1a1a;font-weight:400}.tn.r{text-align:right}
+.boxes{display:flex;gap:6px;flex-shrink:0}
+.fld{margin-bottom:1rem}
+.fld label{font-size:13px;color:#555;display:block;margin-bottom:5px;font-weight:600}
+.fld input{width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;color:#1a1a1a;font-family:'Nunito',sans-serif}
+.fld input:focus{outline:none;border-color:#00A3E0}
+.info-box{background:#E1F5EE;border:1px solid #009B4D;border-radius:10px;padding:12px 16px;font-size:12px;color:#006B35;margin-top:.75rem;line-height:1.6}
+.sgc{background:#fff;border:1px solid #e0e0e0;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.srow{display:flex;align-items:center;gap:8px;padding:9px 14px;border-top:1px solid #f5f5f5}
+.smed{font-size:16px;min-width:22px;text-align:center}
+.sname{flex:1;font-size:13px;color:#1a1a1a;font-weight:600}
+.spts{font-size:12px;font-weight:800;min-width:40px;text-align:right;padding-right:8px}
+.spts.hi{color:#009B4D}.spts.lo{color:#999}
+.swapbtn{font-size:10px;padding:3px 9px;border:1.5px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;color:#666;white-space:nowrap;font-weight:700;font-family:'Nunito',sans-serif}
+.swapbtn:hover{border-color:#009B4D;color:#009B4D}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.tc{display:flex;align-items:center;gap:8px;padding:10px 12px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .12s;user-select:none;background:#fff}
+.tc.on{border-color:#009B4D!important;background:#E1F5EE!important}
+.tc.on .tcn{color:#006B35!important}
+.tcf{font-size:20px;flex-shrink:0}.tci{flex:1;min-width:0}
+.tcg{font-size:10px;color:#888;font-weight:700}
+.tcn{font-size:12px;font-weight:700;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fase-hd{display:flex;align-items:center;gap:10px;margin:1.25rem 0 12px}
+.fase-pill{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.fase-r32{background:#001F5C;color:#fff}.fase-r16{background:#00A3E0;color:#fff}
+.fase-qf{background:#FFB81C;color:#001F5C}.fase-sf{background:#E3001B;color:#fff}
+.fase-fin{background:linear-gradient(90deg,#FFB81C,#FF8C00);color:#fff}
+.kom{border:1.5px solid #e0e0e0;border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fff}
+.konum{font-size:10px;color:#888;margin-bottom:8px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.kobts{display:flex;gap:8px;align-items:stretch}
+.kobt{flex:1;padding:12px 10px;border:2px solid #ddd;border-radius:10px;background:#f5f5f5;cursor:pointer;text-align:center;transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative}
+.kobt-flag{font-size:26px;line-height:1}
+.kobt-name{font-size:13px;font-weight:700;color:#1a1a1a}
+.kobt-chk{position:absolute;top:6px;right:8px;font-size:14px;color:#fff;display:none}
+.kobt.on{background:#009B4D!important;border-color:#009B4D!important}
+.kobt.on .kobt-name{color:#fff!important}
+.kobt.on .kobt-chk{display:block!important}
+.kobt:hover:not(.on):not(.unk){border-color:#009B4D!important;background:#e8f5ee}
+.kobt.unk{opacity:.35;cursor:default;pointer-events:none}
+.kovs{font-size:12px;color:#ccc;flex-shrink:0;align-self:center;font-weight:800}
+.note{font-size:12px;color:#666;margin-bottom:1rem;line-height:1.6}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
+.podium{display:flex;gap:10px;margin-top:1.5rem;align-items:flex-end;justify-content:center}
+.pod-item{flex:1;text-align:center;max-width:160px}
+.pod-bar{border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:8px}
+.pod-name{font-size:13px;font-weight:800;color:#1a1a1a}
+.pod-place{font-size:11px;color:#888;margin-top:2px}
+.nav-wrap{display:flex;gap:8px;margin-top:1.5rem;margin-bottom:24px}
+.nav-wrap button{flex:1;padding:13px 16px;border:none;border-radius:12px;cursor:pointer;font-size:14px;font-weight:800;transition:all .12s;font-family:'Nunito',sans-serif}
+.btn-prev{background:#e8e8e8;color:#555}
+.btn-prev:hover{background:#d8d8d8}
+.btn-next{background:linear-gradient(90deg,#009B4D,#00CC66);color:#fff}
+.btn-next:hover{background:linear-gradient(90deg,#007A38,#00AA55)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-top">
+    <!-- Troféu -->
+    <div style="flex-shrink:0">
+      <svg width="60" height="80" viewBox="0 0 64 86">
+        <defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFE066"/><stop offset="50%" stop-color="#FFB81C"/><stop offset="100%" stop-color="#CC8800"/></linearGradient></defs>
+        <ellipse cx="32" cy="82" rx="18" ry="4" fill="#FFB81C" opacity=".3"/>
+        <rect x="20" y="72" width="24" height="8" rx="2" fill="url(#tg)"/>
+        <rect x="14" y="68" width="36" height="5" rx="2" fill="url(#tg)"/>
+        <rect x="27" y="54" width="10" height="16" fill="url(#tg)"/>
+        <path d="M12,8 L52,8 L52,36 Q52,58 32,58 Q12,58 12,36 Z" fill="url(#tg)"/>
+        <path d="M12,14 Q2,14 2,26 Q2,38 14,40" stroke="#FFE066" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M52,14 Q62,14 62,26 Q62,38 50,40" stroke="#FFE066" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="32" cy="34" r="3" fill="rgba(255,255,255,.4)"/>
+      </svg>
+    </div>
+    <!-- Título -->
+    <div style="flex:1">
+      <div class="hero-pretitle">🏆 Bolão Tradicional · Desde 1994 · 9ª Copa do Mundo</div>
+      <div class="hero-title">COPA DO<br>MUNDO <span>2026</span></div>
+      <div class="hero-sub">FIFA World Cup Canada · Mexico · USA™</div>
+    </div>
+    <!-- Mascote Pique -->
+    <div style="flex-shrink:0">
+      <svg width="68" height="84" viewBox="0 0 70 86">
+        <ellipse cx="35" cy="56" rx="22" ry="18" fill="#4CAF50"/>
+        <ellipse cx="35" cy="50" rx="20" ry="8" fill="#2E7D32"/>
+        <ellipse cx="35" cy="56" rx="22" ry="8" fill="#388E3C"/>
+        <ellipse cx="35" cy="62" rx="20" ry="7" fill="#2E7D32"/>
+        <line x1="35" y1="42" x2="35" y2="70" stroke="#1B5E20" stroke-width="1" opacity=".5"/>
+        <ellipse cx="35" cy="64" rx="14" ry="6" fill="#FFB81C"/>
+        <ellipse cx="35" cy="34" rx="12" ry="10" fill="#FFB81C"/>
+        <ellipse cx="35" cy="38" rx="6" ry="4" fill="#FF9800"/>
+        <circle cx="33" cy="37" r="1" fill="#333"/><circle cx="37" cy="37" r="1" fill="#333"/>
+        <circle cx="30" cy="31" r="3" fill="#fff"/><circle cx="40" cy="31" r="3" fill="#fff"/>
+        <circle cx="31" cy="31" r="1.5" fill="#001F5C"/><circle cx="41" cy="31" r="1.5" fill="#001F5C"/>
+        <ellipse cx="24" cy="26" rx="4" ry="6" fill="#FFB81C" transform="rotate(-15,24,26)"/>
+        <ellipse cx="46" cy="26" rx="4" ry="6" fill="#FFB81C" transform="rotate(15,46,26)"/>
+        <path d="M23,38 Q35,44 47,38" stroke="#E3001B" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <rect x="20" y="70" width="8" height="12" rx="4" fill="#4CAF50"/>
+        <rect x="42" y="70" width="8" height="12" rx="4" fill="#4CAF50"/>
+      </svg>
+    </div>
+  </div>
+  <div class="hero-bottom">
+    <div style="display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.7)">
+      <span style="font-size:20px">🇨🇦</span><span style="font-size:20px">🇲🇽</span><span style="font-size:20px">🇺🇸</span>
+      <span style="font-size:11px;margin-left:4px">Canadá · México · EUA</span>
+    </div>
+    <div class="hero-dates">11 jun — 19 jul 2026<br><span style="color:#FFB81C;font-weight:700">104 jogos · 48 seleções</span></div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+  <div class="prog-row">
+    <span class="prog-lbl" id="pt">Passo 1 de 13</span>
+    <span class="prog-lbl" id="pbadge" style="color:rgba(255,255,255,.8);font-weight:700">0%</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div id="ct"></div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <button id="bp" class="btn-prev" onclick="go(-1)" style="display:none">← Anterior</button>
+  <button id="bn" class="btn-next" onclick="go(1)">Próximo →</button>
+</div>
+
+</div><!-- /page -->
+
+<script>
+const G={A:['México','África do Sul','Coreia do Sul','Dinamarca'],B:['Canadá','Bósnia','Catar','Suíça'],C:['Brasil','Marrocos','Haiti','Escócia'],D:['Estados Unidos','Paraguai','Austrália','Turquia'],E:['Alemanha','Curaçao','Costa do Marfim','Equador'],F:['Holanda','Japão','Suécia','Tunísia'],G:['Bélgica','Egito','Irã','Nova Zelândia'],H:['Espanha','Cabo Verde','Arábia Saudita','Uruguai'],I:['França','Senegal','Iraque','Noruega'],J:['Argentina','Argélia','Áustria','Jordânia'],K:['Portugal','RD Congo','Uzbequistão','Colômbia'],L:['Inglaterra','Croácia','Gana','Panamá']};
+const FL={'México':'🇲🇽','África do Sul':'🇿🇦','Coreia do Sul':'🇰🇷','Dinamarca':'🇩🇰','Canadá':'🇨🇦','Bósnia':'🇧🇦','Catar':'🇶🇦','Suíça':'🇨🇭','Brasil':'🇧🇷','Marrocos':'🇲🇦','Haiti':'🇭🇹','Escócia':'🏴󠁧󠁢󠁳󠁣󠁴󠁿','Estados Unidos':'🇺🇸','Paraguai':'🇵🇾','Austrália':'🇦🇺','Turquia':'🇹🇷','Alemanha':'🇩🇪','Curaçao':'🇨🇼','Costa do Marfim':'🇨🇮','Equador':'🇪🇨','Holanda':'🇳🇱','Japão':'🇯🇵','Suécia':'🇸🇪','Tunísia':'🇹🇳','Bélgica':'🇧🇪','Egito':'🇪🇬','Irã':'🇮🇷','Nova Zelândia':'🇳🇿','Espanha':'🇪🇸','Cabo Verde':'🇨🇻','Arábia Saudita':'🇸🇦','Uruguai':'🇺🇾','França':'🇫🇷','Senegal':'🇸🇳','Iraque':'🇮🇶','Noruega':'🇳🇴','Argentina':'🇦🇷','Argélia':'🇩🇿','Áustria':'🇦🇹','Jordânia':'🇯🇴','Portugal':'🇵🇹','RD Congo':'🇨🇩','Uzbequistão':'🇺🇿','Colômbia':'🇨🇴','Inglaterra':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Croácia':'🇭🇷','Gana':'🇬🇭','Panamá':'🇵🇦'};
+const GMP={A:[[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]],B:[[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]],C:[[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]],D:[[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]],E:[[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]],F:[[0,1],[2,3],[0,2],[3,1],[1,2],[3,0]],G:[[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]],H:[[0,1],[2,3],[0,2],[3,1],[3,0],[1,2]],I:[[0,2],[3,1],[0,1],[2,3],[3,0],[1,2]],J:[[0,2],[3,1],[0,1],[2,3],[1,2],[3,0]],K:[[0,2],[3,1],[0,1],[2,3],[3,0],[1,2]],L:[[0,2],[3,1],[0,1],[2,3],[3,0],[1,2]]};
+const GS=[['A','B'],['C','D'],['E','F'],['G','H'],['I','J'],['K','L']];
+const BD={
+  r32:[{id:'r32_1',num:73,t1:'pos:1:A',t2:'pos:1:B'},{id:'r32_2',num:74,t1:'pos:0:E',t2:'3rd:0'},{id:'r32_3',num:75,t1:'pos:0:F',t2:'pos:1:C'},{id:'r32_4',num:76,t1:'pos:0:C',t2:'pos:1:F'},{id:'r32_5',num:77,t1:'pos:0:I',t2:'3rd:1'},{id:'r32_6',num:78,t1:'pos:1:E',t2:'pos:1:I'},{id:'r32_7',num:79,t1:'pos:0:A',t2:'3rd:2'},{id:'r32_8',num:80,t1:'pos:0:L',t2:'3rd:3'},{id:'r32_9',num:81,t1:'pos:0:D',t2:'3rd:4'},{id:'r32_10',num:82,t1:'pos:0:G',t2:'3rd:5'},{id:'r32_11',num:83,t1:'pos:1:K',t2:'pos:1:L'},{id:'r32_12',num:84,t1:'pos:0:H',t2:'pos:1:J'},{id:'r32_13',num:85,t1:'pos:0:B',t2:'3rd:6'},{id:'r32_14',num:86,t1:'pos:0:J',t2:'pos:1:H'},{id:'r32_15',num:87,t1:'pos:0:K',t2:'3rd:7'},{id:'r32_16',num:88,t1:'pos:1:D',t2:'pos:1:G'}],
+  r16:[{id:'r16_1',num:89,t1:'W:r32_1',t2:'W:r32_3'},{id:'r16_2',num:90,t1:'W:r32_2',t2:'W:r32_5'},{id:'r16_3',num:91,t1:'W:r32_4',t2:'W:r32_6'},{id:'r16_4',num:92,t1:'W:r32_7',t2:'W:r32_8'},{id:'r16_5',num:93,t1:'W:r32_11',t2:'W:r32_12'},{id:'r16_6',num:94,t1:'W:r32_9',t2:'W:r32_10'},{id:'r16_7',num:95,t1:'W:r32_14',t2:'W:r32_16'},{id:'r16_8',num:96,t1:'W:r32_13',t2:'W:r32_15'}],
+  qf:[{id:'qf_1',num:97,t1:'W:r16_1',t2:'W:r16_2'},{id:'qf_2',num:98,t1:'W:r16_5',t2:'W:r16_6'},{id:'qf_3',num:99,t1:'W:r16_3',t2:'W:r16_4'},{id:'qf_4',num:100,t1:'W:r16_7',t2:'W:r16_8'}],
+  sf:[{id:'sf_1',num:101,t1:'W:qf_1',t2:'W:qf_2'},{id:'sf_2',num:102,t1:'W:qf_3',t2:'W:qf_4'}],
+  fin:[{id:'p3',num:103,t1:'L:sf_1',t2:'L:sf_2'},{id:'fin',num:104,t1:'W:sf_1',t2:'W:sf_2'}]
+};
+const AM={};Object.values(BD).flat().forEach(m=>AM[m.id]=m);
+let step=0;const D={};const TOTAL=13;
+
+function boxStyle(on){
+  return on
+    ?'width:28px;height:28px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;cursor:pointer;user-select:none;flex-shrink:0;background:#009B4D;border:1px solid #009B4D;color:#ffffff;'
+    :'width:28px;height:28px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;cursor:pointer;user-select:none;flex-shrink:0;background:#ffffff;border:1px solid #333333;color:transparent;';
+}
+
+function tm(t){
+  return`<span style="font-size:24px;vertical-align:middle;line-height:1">${FL[t]||'🏳'}</span>&nbsp;<span style="font-size:16px;font-weight:400;color:#1a1a1a;vertical-align:middle">${t}</span>`;
+}
+
+function calcPts(k){const mp=GMP[k],pts=Array(4).fill(0);let f=0;mp.forEach(([a,b],i)=>{const v=D['g'+k+'m'+(i+1)];if(v==='1'){pts[a]+=3;f++;}else if(v==='2'){pts[a]++;pts[b]++;f++;}else if(v==='3'){pts[b]+=3;f++;}});return{pts,filled:f};}
+function isValidOrd(ord,pts){for(let i=0;i<3;i++)if(pts[ord[i]]<pts[ord[i+1]])return false;return true;}
+function getOrder(k){const{pts,filled}=calcPts(k);const nat=[0,1,2,3].sort((a,b)=>pts[b]-pts[a]);let ord=D['ord_'+k];if(!ord||!isValidOrd(ord,pts)){ord=[...nat];D['ord_'+k]=ord;}ord.forEach((ti,pos)=>{D['s_'+k+'_'+pos]=G[k][ti];});return{ord,pts,filled};}
+function swapPos(k,p1,p2){getOrder(k);const ord=D['ord_'+k];[ord[p1],ord[p2]]=[ord[p2],ord[p1]];render();}
+
+function groupHTML(k){
+  const ts=G[k],mp=GMP[k];let rows='';
+  mp.forEach(([a,b],i)=>{
+    const id='g'+k+'m'+(i+1),v=D[id];
+    const boxes=[0,1,2].map(bi=>`<div style="${boxStyle(v===String(bi+1))}" data-bid="${id}" data-bv="${bi+1}">${v===String(bi+1)?"X":""}</div>`).join('');
+    rows+=`<div class="mr"><span class="tn r">${tm(ts[a])}</span><div class="boxes">${boxes}</div><span class="tn">${tm(ts[b])}</span></div>`;
+  });
+  return`<div class="gc"><div class="gh gh-${k}">GRUPO ${k} ${ts.map(t=>FL[t]||'').join(' ')}</div>${rows}</div>`;
+}
+
+function standHTML(){
+  const medals=['🥇','🥈','🥉','4°'];
+  return Object.keys(G).map(k=>{
+    const{ord,pts,filled}=getOrder(k),ts=G[k];
+    const rows=ord.map((ti,pos)=>{
+      const p=pts[ti],tn=pos<3&&p===pts[ord[pos+1]];
+      return`<div class="srow"><span class="smed">${medals[pos]}</span><span class="sname">${FL[ts[ti]]||'🏳'} ${ts[ti]}</span><span class="spts${p>0?' hi':' lo'}">${p}pts</span>${tn?`<button class="swapbtn" data-swp="${k}" data-p1="${pos}" data-p2="${pos+1}">↕ trocar</button>`:`<div style="width:52px"></div>`}</div>`;
+    }).join('');
+    const col=filled===6?'#fff':filled>0?'#FFE082':'rgba(255,255,255,.5)';
+    return`<div class="sgc"><div class="gh-${k}" style="padding:9px 14px;font-size:11px;font-weight:800;letter-spacing:.08em;display:flex;align-items:center;gap:8px;text-transform:uppercase"><span>${ts.map(t=>FL[t]||'').join(' ')} GRUPO ${k}</span><span style="margin-left:auto;font-size:10px;color:${col};font-weight:700">${filled}/6${filled===6?' ✓':''}</span></div>${filled===0?`<div style="padding:12px 14px;font-size:12px;color:#999">Preencha os jogos do Grupo ${k} primeiro.</div>`:rows}</div>`;
+  }).join('');
+}
+
+function thirdsHTML(){
+  const thirds=Object.keys(G).map(k=>({g:k,t:D['s_'+k+'_2']||'3° Gr.'+k}));
+  const n=thirds.filter(x=>D['th_'+x.g]).length,ok=n===8;
+  return`<p class="note">Selecione exatamente <strong>8 de 12</strong> terceiros colocados que avançam para a Rodada de 32.</p><div style="margin-bottom:10px"><span class="badge" style="background:${ok?'#009B4D':'#E3001B'};color:#fff;padding:4px 12px">${n}/8 selecionados${ok?' ✓':''}</span></div><div class="tgrid">${thirds.map(({g,t})=>{const on=!!D['th_'+g];return`<div class="tc${on?' on':''}" data-tg="${g}"><span class="tcf">${FL[t]||'🏳'}</span><div class="tci"><div class="tcg">GRUPO ${g}</div><div class="tcn">${t}</div></div><span style="color:#009B4D;font-weight:800;min-width:14px">${on?'✓':''}</span></div>`;}).join('')}</div>`;
+}
+
+function gT(spec){
+  if(!spec||spec==='?')return'?';
+  const ci=spec.indexOf(':'),type=spec.slice(0,ci),rest=spec.slice(ci+1);
+  if(type==='pos'){const[p,g]=rest.split(':');return D['s_'+g+'_'+p]||(['1°','2°','3°','4°'][+p])+' Gr.'+g;}
+  if(type==='3rd'){const idx=+rest;const ths=Object.keys(G).filter(k=>D['th_'+k]).sort();return ths[idx]?(D['s_'+ths[idx]+'_2']||'3° Gr.'+ths[idx]):'3° #'+(idx+1);}
+  if(type==='W'){const m=AM[rest];if(!m||!D['w_'+rest])return'?';return gT(m[D['w_'+rest]]);}
+  if(type==='L'){const m=AM[rest];if(!m||!D['w_'+rest])return'?';return gT(D['w_'+rest]==='t1'?m.t2:m.t1);}
+  return spec;
+}
+function isRes(spec){const t=gT(spec);return t&&t!=='?'&&!t.match(/Gr\.|^3° #/);}
+
+function koMatch(m){
+  const t1=gT(m.t1),t2=gT(m.t2),w=D['w_'+m.id];
+  const r1=isRes(m.t1),r2=isRes(m.t2),ready=r1&&r2;
+  const wl=w?(' — '+(w==='t1'?t1:t2)+' ✓'):'';
+  function btn(side,team,known){const on=w===side;return`<div class="kobt${on?' on':''}${!known?' unk':''}" ${known?`data-kid="${m.id}" data-kside="${side}"`:''}style="cursor:${known?'pointer':'default'}"><span class="kobt-chk">✓</span><span class="kobt-flag">${FL[team]||'🏳'}</span><span class="kobt-name">${team}</span></div>`;}
+  return`<div class="kom"${!ready?' style="opacity:.4"':''}>
+    <div class="konum">JOGO ${m.num}${!ready?' — preencha as fases anteriores':wl}</div>
+    <div class="kobts">${btn('t1',t1,r1)}<span class="kovs">VS</span>${btn('t2',t2,r2)}</div>
+  </div>`;
+}
+function koSection(ms,phase,label){return`<div class="fase-hd"><span class="fase-pill fase-${phase}">${label}</span></div>`+ms.map(koMatch).join('');}
+
+function podiumHTML(){
+  const w=D['w_fin'],camp=w?gT(AM['fin'][w]):null,vice=w?gT(w==='t1'?AM['fin'].t2:AM['fin'].t1):null;
+  const wp3=D['w_p3'],terc=wp3?gT(AM['p3'][wp3]):null;
+  if(!camp&&!terc)return'';
+  function card(pl,team,med,h,bg){return`<div class="pod-item"><div class="pod-bar" style="height:${h}px;background:${bg}">${med}</div><div style="font-size:90px;margin-bottom:8px">${FL[team]||'🏳'}</div><div class="pod-name">${team}</div><div class="pod-place">${pl}</div></div>`;}
+  return`<div style="margin-top:1.5rem;padding:1.5rem;background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;text-align:center">
+    <div style="font-family:'Impact',sans-serif;font-size:20px;color:#FFB81C;letter-spacing:.1em;margin-bottom:1.25rem">⭐ SUA PREVISÃO FINAL ⭐</div>
+    <div class="podium">
+      ${vice?card('2° lugar',vice,'🥈',60,'#78909C'):''}
+      ${camp?card('🏆 Campeão',camp,'👑',80,'linear-gradient(135deg,#FFB81C,#FF8C00)'):''}
+      ${terc?card('3° lugar',terc,'🥉',44,'#8D6E63'):''}
+    </div>
+  </div>`;
+}
+
+const STEPS=[
+  {t:'SEUS DADOS',c:()=>`
+    <div class="fld"><label>Nome completo *</label><input type="text" placeholder="Seu nome" value="${D.nome||''}" oninput="D.nome=this.value"></div>
+    <div class="fld"><label>E-mail *</label><input type="email" placeholder="seu@email.com" value="${D.email||''}" oninput="D.email=this.value"></div>
+    <div class="fld"><label>País</label><input type="text" placeholder="Brasil" value="${D.pais||''}" oninput="D.pais=this.value"></div>
+    <div class="fld"><label>Organizador do Bolão</label><input type="text" placeholder="Nome do organizador" value="${D.admin||''}" oninput="D.admin=this.value"></div>
+    <div class="info-box">⚽ As <strong>3 caixas</strong> ao lado de cada jogo representam: vitória do time à <strong>esquerda (1)</strong> · <strong>empate (2)</strong> · vitória do time à <strong>direita (3)</strong>. Clique para selecionar — a caixa fica verde.</div>`},
+  ...GS.map(([g1,g2])=>({t:`GRUPOS ${g1} E ${g2}`,c:()=>groupHTML(g1)+groupHTML(g2)})),
+  {t:'CLASSIFICAÇÃO DOS GRUPOS',c:()=>`<p class="note">Calculada automaticamente pelos seus resultados. Se dois times ficarem empatados em pontos, use o botão <strong>↕ trocar</strong> para decidir a ordem.</p>`+standHTML()},
+  {t:'TERCEIROS QUE AVANÇAM',c:thirdsHTML},
+  {t:'RODADA DE 32',c:()=>`<p class="note">As seleções vêm da sua classificação. Clique na que você acha que <strong>vence</strong> — fica verde e avança automaticamente ao próximo jogo.</p>`+koSection(BD.r32,'r32','⚡ Rodada de 32 — 16 avos de final')},
+  {t:'OITAVAS DE FINAL',c:()=>`<p class="note">Clique na seleção que avança em cada jogo.</p>`+koSection(BD.r16,'r16','🔵 Oitavas de Final')},
+  {t:'QUARTAS E SEMIFINAIS',c:()=>koSection(BD.qf,'qf','🟡 Quartas de Final')+koSection(BD.sf,'sf','🔴 Semifinais')},
+  {t:'FINAL E CAMPEÃO',c:()=>koSection(BD.fin.slice(0,1),'fin','🥉 3° Lugar — 18/jul (Miami)')+koSection(BD.fin.slice(1),'fin','🏆 Grande Final — 19/jul (Nova York)')+podiumHTML()}
+];
+
+document.getElementById('ct').addEventListener('click',function(e){
+  const box=e.target.closest('[data-bid]');
+  if(box){const id=box.dataset.bid,val=box.dataset.bv;D[id]=(D[id]===val)?null:val;delete D['ord_'+id[1]];render();return;}
+  const ko=e.target.closest('[data-kid]');
+  if(ko){const id=ko.dataset.kid,side=ko.dataset.kside;if(id&&side){D['w_'+id]=(D['w_'+id]===side)?null:side;render();}return;}
+  const tc=e.target.closest('[data-tg]');
+  if(tc){const g=tc.dataset.tg,n=Object.keys(G).filter(k=>D['th_'+k]).length;if(D['th_'+g])delete D['th_'+g];else if(n<8)D['th_'+g]=true;render();return;}
+  const sw=e.target.closest('[data-swp]');
+  if(sw){swapPos(sw.dataset.swp,+sw.dataset.p1,+sw.dataset.p2);return;}
+});
+
+function render(){
+  const s=STEPS[step];
+  document.getElementById('ct').innerHTML=`<div class="card"><h2 class="stitle">${s.t}</h2><div class="stitle-bar"></div>${s.c()}</div>`;
+  const pct=Math.round((step/(TOTAL-1))*100);
+  document.getElementById('pf').style.width=pct+'%';
+  document.getElementById('pt').textContent=`Passo ${step+1} de ${TOTAL}`;
+  document.getElementById('pbadge').textContent=pct+'% preenchido';
+  document.getElementById('bp').style.display=step===0?'none':'';
+  document.getElementById('bn').textContent=step===TOTAL-1?'✓ Enviar Apostas':'Próximo →';
+  
+}
+
+function go(d){
+  if(d>0&&step===TOTAL-1){submit();return;}
+  step=Math.max(0,Math.min(TOTAL-1,step+d));
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
+  render();
+}
+
+function buildPayload(){
+  const payload={};
+  // Dados pessoais
+  payload['Nome']       = D.nome||'';
+  payload['Email']      = D.email||'';
+  payload['_replyto']   = D.email||'';
+  payload['_subject']   = 'Bolão Copa 2026 - Aposta recebida: '+(D.nome||'Apostador');
+  payload['Pais']       = D.pais||'';
+  payload['Organizador']= D.admin||'';
+  // Fase de grupos: 72 jogos
+  Object.keys(G).forEach(k=>{
+    GMP[k].forEach(([a,b],i)=>{
+      const id='g'+k+'m'+(i+1);
+      payload[id+'_'+G[k][a]+'_vs_'+G[k][b]] = D[id]||'';
+    });
+  });
+  // Classificação dos grupos
+  Object.keys(G).forEach(k=>{
+    ['1o','2o','3o','4o'].forEach((pos,p)=>{
+      payload['Gr'+k+'_'+pos] = D['s_'+k+'_'+p]||'';
+    });
+  });
+  // 3os colocados
+  Object.keys(G).forEach((k,i)=>{
+    payload['3o_avanca_Gr'+k] = D['th_'+k]?'Sim':'Nao';
+  });
+  // Mata-mata
+  const allMatches=Object.values(BD).flat();
+  allMatches.forEach(m=>{
+    const w=D['w_'+m.id];
+    payload['J'+m.num] = w?gT(m[w]):'';
+  });
+  // Campeão
+  const wf=D['w_fin'];
+  payload['Campeao'] = wf?gT(AM['fin'][wf]):'';
+  return payload;
+}
+
+async function submit(){
+  const w=D['w_fin'],champ=w?gT(AM['fin'][w]):null;
+
+  // Mostrar tela de envio com loading
+  document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
+    <div style="font-size:48px;margin-bottom:1rem">⏳</div>
+    <div style="font-family:'Impact',sans-serif;font-size:24px;color:#001F5C;letter-spacing:.06em">Enviando apostas...</div>
+  </div>`;
+  document.getElementById('bn').style.display='none';
+  document.getElementById('bp').style.display='none';
+
+  try {
+    const payload = buildPayload();
+    const resp = await fetch('https://formspree.io/f/xojyjyep',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(payload)
+    });
+
+    if(resp.ok){
+      // Sucesso
+      document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
+        <div style="font-size:72px;margin-bottom:1rem">🏆</div>
+        <div style="font-family:'Impact',sans-serif;font-size:32px;color:#001F5C;letter-spacing:.06em;margin-bottom:.5rem">APOSTAS ENVIADAS!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Obrigado, <strong>${D.nome||'apostador'}</strong>! Boa sorte no Bolão 2026! 🎉</p>
+        <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;text-align:left">
+          <div style="font-size:10px;color:#FFB81C;margin-bottom:6px;letter-spacing:.1em;font-weight:800">🏆 CAMPEÃO APOSTADO</div>
+          <div style="font-size:20px;font-weight:800;color:#fff">${champ?(FL[champ]||'🏳')+' '+champ:'Não preenchido'}</div>
+        </div>
+        <p style="font-size:13px;color:#555;line-height:1.6">A organização receberá seu e-mail e confirmará para você sua inscrição.</p>
+      </div>`;
+    } else {
+      throw new Error('Erro no envio');
+    }
+  } catch(err){
+    // Erro — mostrar mensagem e permitir tentar de novo
+    document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
+      <div style="font-size:48px;margin-bottom:1rem">❌</div>
+      <div style="font-family:'Impact',sans-serif;font-size:24px;color:#E3001B;margin-bottom:1rem">Erro ao enviar</div>
+      <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Verifique sua conexão e tente novamente.</p>
+      <button onclick="step=TOTAL-1;render()" style="padding:12px 28px;border:2px solid #001F5C;border-radius:10px;background:transparent;cursor:pointer;font-size:13px;color:#001F5C;font-weight:800;font-family:'Nunito',sans-serif">← Tentar novamente</button>
+    </div>`;
+    document.getElementById('bn').style.display='';
+    document.getElementById('bp').style.display='none';
+  }
+}
+
+render();
+</script>
+</body>
+</html>

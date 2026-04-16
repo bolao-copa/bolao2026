@@ -90,6 +90,8 @@ body{font-family:'Nunito',system-ui,sans-serif;background:#f5f5f5;min-height:100
 .btn-prev:hover{background:#d8d8d8}
 .btn-next{background:linear-gradient(90deg,#009B4D,#00CC66);color:#fff}
 .btn-next:hover{background:linear-gradient(90deg,#007A38,#00AA55)}
+.val-msg{background:#FFF3CD;border:1.5px solid #FFB81C;border-radius:10px;padding:12px 16px;font-size:13px;color:#856404;margin-top:12px;display:none;text-align:center;font-weight:600;animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 </style>
 </head>
 <body>
@@ -116,9 +118,9 @@ body{font-family:'Nunito',system-ui,sans-serif;background:#f5f5f5;min-height:100
     </div>
     <!-- Título -->
     <div style="flex:1">
-      <div class="hero-pretitle">🏆 Bolão Tradicional · Desde 1994 · 9ª Copa do Mundo</div>
+      <div class="hero-pretitle">🏆 Bolão Tradicional · Desde 1994 · 9ª Copa do Mundo<br><span style="font-size:8px;color:#7EB8E0;font-weight:400;letter-spacing:.1em">Traditional Pool · Since 1994 · 9th World Cup</span></div>
       <div class="hero-title">COPA DO<br>MUNDO <span>2026</span></div>
-      <div class="hero-sub">FIFA World Cup Canada · Mexico · USA™</div>
+      <div class="hero-sub">FIFA World Cup Canada · Mexico · USA™ <span style="font-size:9px;color:rgba(255,255,255,.35)">· Bolão Copa do Mundo 2026</span></div>
     </div>
     <!-- Mascote Pique -->
     <div style="flex-shrink:0">
@@ -147,7 +149,7 @@ body{font-family:'Nunito',system-ui,sans-serif;background:#f5f5f5;min-height:100
       <span style="font-size:20px">🇨🇦</span><span style="font-size:20px">🇲🇽</span><span style="font-size:20px">🇺🇸</span>
       <span style="font-size:11px;margin-left:4px">Canadá · México · EUA</span>
     </div>
-    <div class="hero-dates">11 jun — 19 jul 2026<br><span style="color:#FFB81C;font-weight:700">104 jogos · 48 seleções</span></div>
+    <div class="hero-dates">11 jun — 19 jul 2026<br><span style="color:#FFB81C;font-weight:700">104 jogos · 48 seleções <span style="font-size:9px;font-weight:400">/ 104 matches · 48 teams</span></span></div>
   </div>
 </div>
 
@@ -165,9 +167,10 @@ body{font-family:'Nunito',system-ui,sans-serif;background:#f5f5f5;min-height:100
 
 <!-- NAV -->
 <div class="nav-wrap">
-  <button id="bp" class="btn-prev" onclick="go(-1)" style="display:none">← Anterior</button>
-  <button id="bn" class="btn-next" onclick="go(1)">Próximo →</button>
+  <button id="bp" class="btn-prev" onclick="go(-1)" style="display:none">← Anterior / Back</button>
+  <button id="bn" class="btn-next" onclick="go(1)">Próximo / Next →</button>
 </div>
+<div class="val-msg" id="val-msg">⚠️ Por favor, preencha todos os campos antes de continuar.</div>
 
 </div><!-- /page -->
 
@@ -217,7 +220,7 @@ function standHTML(){
     const{ord,pts,filled}=getOrder(k),ts=G[k];
     const rows=ord.map((ti,pos)=>{
       const p=pts[ti],tn=pos<3&&p===pts[ord[pos+1]];
-      return`<div class="srow"><span class="smed">${medals[pos]}</span><span class="sname">${FL[ts[ti]]||'🏳'} ${ts[ti]}</span><span class="spts${p>0?' hi':' lo'}">${p}pts</span>${tn?`<button class="swapbtn" data-swp="${k}" data-p1="${pos}" data-p2="${pos+1}">↕ trocar</button>`:`<div style="width:52px"></div>`}</div>`;
+      return`<div class="srow"><span class="smed">${medals[pos]}</span><span class="sname">${FL[ts[ti]]||'🏳'} ${ts[ti]}</span><span class="spts${p>0?' hi':' lo'}">${p}pts</span>${tn?`<button class="swapbtn" data-swp="${k}" data-p1="${pos}" data-p2="${pos+1}">↕ trocar / swap</button>`:`<div style="width:52px"></div>`}</div>`;
     }).join('');
     const col=filled===6?'#fff':filled>0?'#FFE082':'rgba(255,255,255,.5)';
     return`<div class="sgc"><div class="gh-${k}" style="padding:9px 14px;font-size:11px;font-weight:800;letter-spacing:.08em;display:flex;align-items:center;gap:8px;text-transform:uppercase"><span>${ts.map(t=>FL[t]||'').join(' ')} GRUPO ${k}</span><span style="margin-left:auto;font-size:10px;color:${col};font-weight:700">${filled}/6${filled===6?' ✓':''}</span></div>${filled===0?`<div style="padding:12px 14px;font-size:12px;color:#999">Preencha os jogos do Grupo ${k} primeiro.</div>`:rows}</div>`;
@@ -227,7 +230,7 @@ function standHTML(){
 function thirdsHTML(){
   const thirds=Object.keys(G).map(k=>({g:k,t:D['s_'+k+'_2']||'3° Gr.'+k}));
   const n=thirds.filter(x=>D['th_'+x.g]).length,ok=n===8;
-  return`<p class="note">Selecione exatamente <strong>8 de 12</strong> terceiros colocados que avançam para a Rodada de 32.</p><div style="margin-bottom:10px"><span class="badge" style="background:${ok?'#009B4D':'#E3001B'};color:#fff;padding:4px 12px">${n}/8 selecionados${ok?' ✓':''}</span></div><div class="tgrid">${thirds.map(({g,t})=>{const on=!!D['th_'+g];return`<div class="tc${on?' on':''}" data-tg="${g}"><span class="tcf">${FL[t]||'🏳'}</span><div class="tci"><div class="tcg">GRUPO ${g}</div><div class="tcn">${t}</div></div><span style="color:#009B4D;font-weight:800;min-width:14px">${on?'✓':''}</span></div>`;}).join('')}</div>`;
+  return`<p class="note">Selecione exatamente <strong>8 de 12</strong> terceiros colocados que avançam para a Rodada de 32.<br><span style="font-size:10px;color:#888">Select exactly <strong>8 of 12</strong> third-placed teams that advance to the Round of 32.</span></p><div style="margin-bottom:10px"><span class="badge" style="background:${ok?'#009B4D':'#E3001B'};color:#fff;padding:4px 12px">${n}/8 selecionados${ok?' ✓':''}</span></div><div class="tgrid">${thirds.map(({g,t})=>{const on=!!D['th_'+g];return`<div class="tc${on?' on':''}" data-tg="${g}"><span class="tcf">${FL[t]||'🏳'}</span><div class="tci"><div class="tcg">GRUPO ${g}</div><div class="tcn">${t}</div></div><span style="color:#009B4D;font-weight:800;min-width:14px">${on?'✓':''}</span></div>`;}).join('')}</div>`;
 }
 
 function gT(spec){
@@ -247,7 +250,7 @@ function koMatch(m){
   const wl=w?(' — '+(w==='t1'?t1:t2)+' ✓'):'';
   function btn(side,team,known){const on=w===side;return`<div class="kobt${on?' on':''}${!known?' unk':''}" ${known?`data-kid="${m.id}" data-kside="${side}"`:''}style="cursor:${known?'pointer':'default'}"><span class="kobt-chk">✓</span><span class="kobt-flag">${FL[team]||'🏳'}</span><span class="kobt-name">${team}</span></div>`;}
   return`<div class="kom"${!ready?' style="opacity:.4"':''}>
-    <div class="konum">JOGO ${m.num}${!ready?' — preencha as fases anteriores':wl}</div>
+    <div class="konum">JOGO ${m.num}${!ready?' — complete previous stages':wl}</div>
     <div class="kobts">${btn('t1',t1,r1)}<span class="kovs">VS</span>${btn('t2',t2,r2)}</div>
   </div>`;
 }
@@ -259,28 +262,28 @@ function podiumHTML(){
   if(!camp&&!terc)return'';
   function card(pl,team,med,h,bg){return`<div class="pod-item"><div class="pod-bar" style="height:${h}px;background:${bg}">${med}</div><div style="font-size:90px;margin-bottom:8px">${FL[team]||'🏳'}</div><div class="pod-name">${team}</div><div class="pod-place">${pl}</div></div>`;}
   return`<div style="margin-top:1.5rem;padding:1.5rem;background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;text-align:center">
-    <div style="font-family:'Impact',sans-serif;font-size:20px;color:#FFB81C;letter-spacing:.1em;margin-bottom:1.25rem">⭐ SUA PREVISÃO FINAL ⭐</div>
+    <div style="font-family:'Impact',sans-serif;font-size:20px;color:#FFB81C;letter-spacing:.1em;margin-bottom:1.25rem">⭐ SUA PREVISÃO FINAL ⭐<br><span style="font-size:13px;font-weight:400;opacity:.7">YOUR FINAL PREDICTION</span></div>
     <div class="podium">
-      ${vice?card('2° lugar',vice,'🥈',60,'#78909C'):''}
-      ${camp?card('🏆 Campeão',camp,'👑',80,'linear-gradient(135deg,#FFB81C,#FF8C00)'):''}
-      ${terc?card('3° lugar',terc,'🥉',44,'#8D6E63'):''}
+      ${vice?card('2° lugar / 2nd place',vice,'🥈',60,'#78909C'):''}
+      ${camp?card('🏆 Campeão / Champion',camp,'👑',80,'linear-gradient(135deg,#FFB81C,#FF8C00)'):''}
+      ${terc?card('3° lugar / 3rd place',terc,'🥉',44,'#8D6E63'):''}
     </div>
   </div>`;
 }
 
 const STEPS=[
   {t:'SEUS DADOS',c:()=>`
-    <div class="fld"><label>Nome completo *</label><input type="text" placeholder="Seu nome" value="${D.nome||''}" oninput="D.nome=this.value"></div>
-    <div class="fld"><label>E-mail *</label><input type="email" placeholder="seu@email.com" value="${D.email||''}" oninput="D.email=this.value"></div>
-    <div class="fld"><label>País</label><input type="text" placeholder="Brasil" value="${D.pais||''}" oninput="D.pais=this.value"></div>
-    <div class="fld"><label>Organizador do Bolão</label><input type="text" placeholder="Nome do organizador" value="${D.admin||''}" oninput="D.admin=this.value"></div>
-    <div class="info-box">⚽ As <strong>3 caixas</strong> ao lado de cada jogo representam: vitória do time à <strong>esquerda (1)</strong> · <strong>empate (2)</strong> · vitória do time à <strong>direita (3)</strong>. Clique para selecionar — a caixa fica verde.</div>`},
+    <div class="fld"><label>Nome completo * <span style="font-size:10px;color:#999;font-weight:400">/ Full name</span></label><input type="text" placeholder="Seu nome" value="${D.nome||''}" oninput="D.nome=this.value"></div>
+    <div class="fld"><label>E-mail * <span style="font-size:10px;color:#999;font-weight:400">/ Email</span></label><input type="email" placeholder="seu@email.com" value="${D.email||''}" oninput="D.email=this.value"></div>
+    <div class="fld"><label>País <span style="font-size:10px;color:#999;font-weight:400">/ Country</span></label><input type="text" placeholder="Brasil" value="${D.pais||'Brasil'}" oninput="D.pais=this.value"></div>
+    <div class="fld"><label>Coordenador do Bolão <span style="font-size:10px;color:#999;font-weight:400">/ Pool Coordinator</span></label><select style="width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;color:#1a1a1a;font-family:'Nunito',sans-serif;background:#fff;appearance:auto" onchange="D.admin=this.value"><option value="">— Selecione / Select —</option><option value="Cassio Scomparin" ${D.admin==='Cassio Scomparin'?'selected':''}>Cassio Scomparin</option><option value="Paulo Gravena" ${D.admin==='Paulo Gravena'?'selected':''}>Paulo Gravena</option><option value="Fernando Fonseca" ${D.admin==='Fernando Fonseca'?'selected':''}>Fernando Fonseca</option><option value="João Xavier" ${D.admin==='João Xavier'?'selected':''}>João Xavier</option></select></div>
+    <div class="info-box">⚽ As <strong>3 caixas</strong> ao lado de cada jogo representam: vitória do time à <strong>esquerda (1)</strong> · <strong>empate (2)</strong> · vitória do time à <strong>direita (3)</strong>. Clique para selecionar — a caixa fica verde.<br><span style="font-size:10px;color:#006B35">The <strong>3 boxes</strong> next to each match: left team wins <strong>(1)</strong> · draw <strong>(2)</strong> · right team wins <strong>(3)</strong>. Click to select — the box turns green.</span></div>`},
   ...GS.map(([g1,g2])=>({t:`GRUPOS ${g1} E ${g2}`,c:()=>groupHTML(g1)+groupHTML(g2)})),
-  {t:'CLASSIFICAÇÃO DOS GRUPOS',c:()=>`<p class="note">Calculada automaticamente pelos seus resultados. Se dois times ficarem empatados em pontos, use o botão <strong>↕ trocar</strong> para decidir a ordem.</p>`+standHTML()},
+  {t:'CLASSIFICAÇÃO DOS GRUPOS',c:()=>`<p class="note">Calculada automaticamente pelos seus resultados. Se dois times ficarem empatados em pontos, use o botão <strong>↕ trocar / swap</strong> para decidir a ordem.<br><span style="font-size:10px;color:#888">Automatically calculated from your results. If two teams are tied on points, use the <strong>↕ swap</strong> button to decide the order.</span></p>`+standHTML()},
   {t:'TERCEIROS QUE AVANÇAM',c:thirdsHTML},
-  {t:'RODADA DE 32',c:()=>`<p class="note">As seleções vêm da sua classificação. Clique na que você acha que <strong>vence</strong> — fica verde e avança automaticamente ao próximo jogo.</p>`+koSection(BD.r32,'r32','⚡ Rodada de 32 — 16 avos de final')},
-  {t:'OITAVAS DE FINAL',c:()=>`<p class="note">Clique na seleção que avança em cada jogo.</p>`+koSection(BD.r16,'r16','🔵 Oitavas de Final')},
-  {t:'QUARTAS E SEMIFINAIS',c:()=>koSection(BD.qf,'qf','🟡 Quartas de Final')+koSection(BD.sf,'sf','🔴 Semifinais')},
+  {t:'RODADA DE 32',c:()=>`<p class="note">As seleções vêm da sua classificação. Clique na que você acha que <strong>vence</strong> — fica verde e avança automaticamente ao próximo jogo.<br><span style="font-size:10px;color:#888">Teams come from your standings. Click the one you think <strong>wins</strong> — it turns green and advances automatically.</span></p>`+koSection(BD.r32,'r32','⚡ Rodada de 32 — 16 avos de final')},
+  {t:'OITAVAS DE FINAL',c:()=>`<p class="note">Clique na seleção que avança em cada jogo.<br><span style="font-size:10px;color:#888">Click the team that advances in each match.</span></p>`+koSection(BD.r16,'r16','🔵 Oitavas de Final / Round of 16')},
+  {t:'QUARTAS E SEMIFINAIS',c:()=>koSection(BD.qf,'qf','🟡 Quartas de Final / Quarter-Finals')+koSection(BD.sf,'sf','🔴 Semifinais / Semi-Finals')},
   {t:'FINAL E CAMPEÃO',c:()=>koSection(BD.fin.slice(0,1),'fin','🥉 3° Lugar — 18/jul (Miami)')+koSection(BD.fin.slice(1),'fin','🏆 Grande Final — 19/jul (Nova York)')+podiumHTML()}
 ];
 
@@ -301,18 +304,89 @@ function render(){
   const pct=Math.round((step/(TOTAL-1))*100);
   document.getElementById('pf').style.width=pct+'%';
   document.getElementById('pt').textContent=`Passo ${step+1} de ${TOTAL}`;
-  document.getElementById('pbadge').textContent=pct+'% preenchido';
+  document.getElementById('pbadge').textContent=pct+'% preenchido / filled';
   document.getElementById('bp').style.display=step===0?'none':'';
-  document.getElementById('bn').textContent=step===TOTAL-1?'✓ Enviar Apostas':'Próximo →';
+  document.getElementById('bn').textContent=step===TOTAL-1?'✓ Enviar / Submit Bets':'Próximo / Next →';
   
 }
 
+function validate(){
+  const MSG = 'Favor preencher todos os campos. / Please fill in all fields.';
+  // Passo 0: dados pessoais
+  if(step===0){
+    if(!D.nome||!D.nome.trim()) return MSG;
+    if(!D.email||!D.email.trim()||!D.email.includes('@')) return MSG;
+    if(!D.admin||!D.admin.trim()) return MSG;
+    return null;
+  }
+  // Passos 1-6: grupos
+  if(step>=1&&step<=6){
+    const par=GS[step-1];
+    for(const k of par){
+      for(let i=0;i<GMP[k].length;i++){
+        if(!D['g'+k+'m'+(i+1)]) return MSG;
+      }
+    }
+    return null;
+  }
+  // Passo 7: classificação (automática)
+  if(step===7) return null;
+  // Passo 8: terceiros
+  if(step===8){
+    const n=Object.keys(G).filter(k=>D['th_'+k]).length;
+    if(n!==8) return MSG;
+    return null;
+  }
+  // Passo 9: Rodada de 32
+  if(step===9){
+    for(const m of BD.r32) if(!D['w_'+m.id]) return MSG;
+    return null;
+  }
+  // Passo 10: Oitavas
+  if(step===10){
+    for(const m of BD.r16) if(!D['w_'+m.id]) return MSG;
+    return null;
+  }
+  // Passo 11: Quartas + Semis
+  if(step===11){
+    for(const m of [...BD.qf,...BD.sf]) if(!D['w_'+m.id]) return MSG;
+    return null;
+  }
+  // Passo 12: Final
+  if(step===12){
+    if(!D['w_p3']||!D['w_fin']) return MSG;
+    return null;
+  }
+  return null;
+}
+
+function showValMsg(msg){
+  const el=document.getElementById('val-msg');
+  el.textContent='⚠️  '+msg;
+  el.style.display='block';
+  el.style.animation='none';
+  el.offsetHeight; // reflow
+  el.style.animation='shake .3s ease';
+  window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+}
+
+function hideValMsg(){
+  const el=document.getElementById('val-msg');
+  if(el) el.style.display='none';
+}
+
 function go(d){
-  if(d>0&&step===TOTAL-1){submit();return;}
+  if(d>0){
+    const err=validate();
+    if(err){showValMsg(err);return;}
+    hideValMsg();
+    if(step===TOTAL-1){submit();return;}
+  }
   step=Math.max(0,Math.min(TOTAL-1,step+d));
   window.scrollTo({top:0,behavior:'smooth'});
   document.documentElement.scrollTop=0;
   document.body.scrollTop=0;
+  hideValMsg();
   render();
 }
 
@@ -377,13 +451,13 @@ async function submit(){
       // Sucesso
       document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
         <div style="font-size:72px;margin-bottom:1rem">🏆</div>
-        <div style="font-family:'Impact',sans-serif;font-size:32px;color:#001F5C;letter-spacing:.06em;margin-bottom:.5rem">APOSTAS ENVIADAS!</div>
-        <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Obrigado, <strong>${D.nome||'apostador'}</strong>! Boa sorte no Bolão 2026! 🎉</p>
+        <div style="font-family:'Impact',sans-serif;font-size:32px;color:#001F5C;letter-spacing:.06em;margin-bottom:.5rem">APOSTAS ENVIADAS!<br><span style="font-size:18px;letter-spacing:.04em">BETS SUBMITTED!</span></div>
+        <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Obrigado, <strong>${D.nome||'apostador'}</strong>! Boa sorte no Bolão 2026! / Good luck! 🎉</p>
         <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;text-align:left">
-          <div style="font-size:10px;color:#FFB81C;margin-bottom:6px;letter-spacing:.1em;font-weight:800">🏆 CAMPEÃO APOSTADO</div>
+          <div style="font-size:10px;color:#FFB81C;margin-bottom:6px;letter-spacing:.1em;font-weight:800">🏆 CAMPEÃO APOSTADO / YOUR CHAMPION</div>
           <div style="font-size:20px;font-weight:800;color:#fff">${champ?(FL[champ]||'🏳')+' '+champ:'Não preenchido'}</div>
         </div>
-        <p style="font-size:13px;color:#555;line-height:1.6">A organização receberá seu e-mail e confirmará para você sua inscrição.</p>
+        <p style="font-size:13px;color:#555;line-height:1.6">A organização receberá seu e-mail e confirmará para você sua inscrição.<br><span style="font-size:11px;color:#777">The organizer will receive your email and confirm your registration.</span></p>
       </div>`;
     } else {
       throw new Error('Erro no envio');

@@ -92,6 +92,22 @@ body{font-family:'Nunito',system-ui,sans-serif;background:#f5f5f5;min-height:100
 .btn-next:hover{background:linear-gradient(90deg,#007A38,#00AA55)}
 .val-msg{background:#FFF3CD;border:1.5px solid #FFB81C;border-radius:10px;padding:12px 16px;font-size:13px;color:#856404;margin-top:12px;display:none;text-align:center;font-weight:600;animation:shake .3s ease}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.rules-btn{background:linear-gradient(135deg,#FFB81C,#FFA000);color:#001F5C;border:none;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;width:100%;margin-bottom:16px;font-family:'Nunito',sans-serif;transition:all .2s;box-shadow:0 2px 8px rgba(255,184,28,.3)}
+.rules-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(255,184,28,.4)}
+.rules-section{background:#fff;border-radius:12px;padding:24px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07);display:none}
+.rules-section.show{display:block;animation:slideDown .3s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.rules-lang{display:flex;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #f0f0f0}
+.rules-lang-btn{background:transparent;border:2px solid #e0e0e0;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;color:#666;transition:all .2s;font-family:'Nunito',sans-serif}
+.rules-lang-btn.active{background:linear-gradient(90deg,#001F5C,#0030AA);color:#fff;border-color:#001F5C}
+.rules-content{display:none}
+.rules-content.active{display:block}
+.rules-h2{font-family:'Impact','Arial Black',sans-serif;font-size:22px;color:var(--navy);margin-top:24px;margin-bottom:12px;letter-spacing:.04em}
+.rules-h3{font-size:16px;color:var(--navy);font-weight:800;margin-top:16px;margin-bottom:8px}
+.rules-p{font-size:14px;color:#333;line-height:1.7;margin-bottom:12px}
+.rules-ul{margin-left:20px;margin-bottom:12px}
+.rules-ul li{font-size:14px;color:#333;line-height:1.7;margin-bottom:6px}
+.rules-note{background:#E1F5EE;border-left:4px solid #009B4D;padding:12px 16px;border-radius:6px;font-size:13px;color:#006B35;margin:16px 0;line-height:1.6}
 </style>
 </head>
 <body>
@@ -150,6 +166,144 @@ body{font-family:'Nunito',system-ui,sans-serif;background:#f5f5f5;min-height:100
       <span style="font-size:11px;margin-left:4px">Canadá · México · EUA</span>
     </div>
     <div class="hero-dates">11 jun — 19 jul 2026<br><span style="color:#FFB81C;font-weight:700">104 jogos · 48 seleções <span style="font-size:9px;font-weight:400">/ 104 matches · 48 teams</span></span></div>
+  </div>
+</div>
+
+<!-- BOTÃO REGRAS -->
+<button class="rules-btn" onclick="document.getElementById('rules').classList.toggle('show')">
+  📖 REGRAS DO BOLÃO · POOL RULES
+</button>
+
+<!-- SEÇÃO DE REGRAS -->
+<div class="rules-section" id="rules">
+  <!-- Seletor de idioma -->
+  <div class="rules-lang">
+    <button class="rules-lang-btn active" onclick="showLang('pt')">🇧🇷 Português</button>
+    <button class="rules-lang-btn" onclick="showLang('en')">🇺🇸 English</button>
+  </div>
+
+  <!-- CONTEÚDO EM PORTUGUÊS -->
+  <div class="rules-content active" id="rules-pt">
+    <h2 class="rules-h2">📋 REGRAS GERAIS</h2>
+    <p class="rules-p">• O bolão somente será validado se todos os campos do formulário estiverem preenchidos corretamente e enviados até a data limite com o valor pago (<strong>R$ 100,00</strong>).</p>
+    <p class="rules-p">• Cada participante deverá ter seu palpite vinculado a um endereço eletrônico (e-mail).</p>
+    <p class="rules-p">• Cada pessoa pode participar com várias apostas e deve estar associada a um dos coordenadores.</p>
+    <p class="rules-p">• <strong>Data limite para inscrição/envio e pagamento:</strong> 10 de junho de 2026.</p>
+    <p class="rules-p">• Após o prazo, será enviado a cada participante uma planilha contendo TODAS as apostas para acompanhamento e simulação.</p>
+
+    <h2 class="rules-h2">🎯 PONTUAÇÃO</h2>
+    <h3 class="rules-h3">Fase de Grupos (72 jogos)</h3>
+    <ul class="rules-ul">
+      <li><strong>10 pontos</strong> - Cada jogo correto na fase de grupos</li>
+      <li><strong>12 pontos</strong> - Cada seleção CLASSIFICADA (1º, 2º ou 3º) na posição correta</li>
+      <li><strong>11 pontos</strong> - Cada seleção CLASSIFICADA (1º, 2º ou 3º) em posição invertida (se classificou, mas em outra posição)</li>
+    </ul>
+
+    <div class="rules-note">
+      <strong>📌 Nota sobre Terceiros Colocados:</strong><br>
+      A distribuição dos terceiros colocados na Rodada de 32 pode variar da tabela oficial da FIFA devido a critérios de desempate complexos, mas isso não afeta sua pontuação. Você ganhará 12 pontos se o terceiro colocado que escolheu avançar na posição correta, ou 11 pontos se avançar em posição diferente da prevista.
+    </div>
+
+    <h3 class="rules-h3">Mata-Mata</h3>
+    <ul class="rules-ul">
+      <li><strong>16 pontos</strong> - Cada seleção correta nas OITAVAS de Final (16 seleções)</li>
+      <li><strong>24 pontos</strong> - Cada seleção correta nas QUARTAS de Final (8 seleções)</li>
+      <li><strong>32 pontos</strong> - Cada seleção correta nas SEMIFINAIS (4 seleções)</li>
+      <li><strong>35 pontos</strong> - Acerto do 3º COLOCADO</li>
+      <li><strong>45 pontos</strong> - Acerto da seleção na FINAL</li>
+      <li><strong>80 pontos</strong> - Acerto do CAMPEÃO da Copa do Mundo</li>
+    </ul>
+
+    <h2 class="rules-h2">🏆 GANHADORES E PRÊMIOS</h2>
+    <p class="rules-p">Serão premiados o 1º, 2º e 3º lugares com maior pontuação ao final da Copa do Mundo.</p>
+    <p class="rules-p"><strong>Distribuição do prêmio (100% do valor arrecadado):</strong></p>
+    <ul class="rules-ul">
+      <li><strong>60%</strong> - Campeão (maior pontuação no final da Copa do Mundo)</li>
+      <li><strong>20%</strong> - 2º lugar (segunda maior pontuação no final da Copa do Mundo)</li>
+      <li><strong>10%</strong> - 3º lugar (terceira maior pontuação no final da Copa do Mundo)</li>
+      <li><strong>8%</strong> - Maior pontuação ao final da 1ª fase <strong>sem considerar as classificações</strong> de cada seleção (apenas os 72 jogos)</li>
+      <li><strong>2%</strong> - 100º lugar (centésima posição ao final da Copa do Mundo)</li>
+    </ul>
+
+    <h3 class="rules-h3">Critérios de Desempate</h3>
+    <p class="rules-p">Em caso de empate na pontuação final, os critérios de desempate são (em ordem):</p>
+    <ol class="rules-ul">
+      <li>Acerto do Campeão</li>
+      <li>Pontuação para acerto dos Finalistas</li>
+      <li>Pontuação para acerto dos Semifinalistas</li>
+      <li>Pontuação para acerto das Quartas de Final</li>
+      <li>Pontuação para acerto das Oitavas de Final</li>
+      <li>Pontuação na 2ª fase (mata-mata)</li>
+      <li>Prêmio dividido (se o empate persistir)</li>
+    </ol>
+
+    <h2 class="rules-h2">💰 VALORES</h2>
+    <p class="rules-p">• Valor da aposta: <strong>R$ 100,00 (BRL)</strong></p>
+    <p class="rules-p">• Participantes fora do Brasil terão os valores convertidos para sua moeda local no momento do pagamento</p>
+    <p class="rules-p">• O pagamento final dos prêmios será em BRL ou equivalente no final da competição (com valor equivalente em BRL)</p>
+    <p class="rules-p">• Coordenadores responsáveis: <strong>Cassio Scomparin, Paulo Gravena, Fernando Fonseca, João Xavier</strong></p>
+  </div>
+
+  <!-- CONTEÚDO EM INGLÊS -->
+  <div class="rules-content" id="rules-en">
+    <h2 class="rules-h2">📋 GENERAL RULES</h2>
+    <p class="rules-p">• A bet will only be valid if all form fields are correctly completed and submitted by the deadline with payment (<strong>BRL 100.00 / approx. USD 20.00</strong>).</p>
+    <p class="rules-p">• Each participant must link their bet to an email address.</p>
+    <p class="rules-p">• Each person can submit multiple bets and must be associated with one of the coordinators.</p>
+    <p class="rules-p">• <strong>Deadline for registration/submission and payment:</strong> June 10, 2026.</p>
+    <p class="rules-p">• After the deadline, each participant will receive a spreadsheet containing ALL bets for tracking and simulation.</p>
+
+    <h2 class="rules-h2">🎯 SCORING</h2>
+    <h3 class="rules-h3">Group Stage (72 matches)</h3>
+    <ul class="rules-ul">
+      <li><strong>10 points</strong> - Each correct match result in the group stage</li>
+      <li><strong>12 points</strong> - Each team QUALIFIED (1st, 2nd or 3rd) in the CORRECT position</li>
+      <li><strong>11 points</strong> - Each team QUALIFIED (1st, 2nd or 3rd) in INVERTED position (qualified but in a different position)</li>
+    </ul>
+
+    <div class="rules-note">
+      <strong>📌 Note about Third-Placed Teams:</strong><br>
+      The distribution of third-placed teams in the Round of 32 may vary from the official FIFA bracket due to complex tiebreaker criteria, but this does not affect your scoring. You will earn 12 points if the third-placed team you selected advances in the correct position, or 11 points if it advances in a different position than predicted.
+    </div>
+
+    <h3 class="rules-h3">Knockout Stage</h3>
+    <ul class="rules-ul">
+      <li><strong>16 points</strong> - Each correct team in the ROUND OF 16 (16 teams)</li>
+      <li><strong>24 points</strong> - Each correct team in the QUARTERFINALS (8 teams)</li>
+      <li><strong>32 points</strong> - Each correct team in the SEMIFINALS (4 teams)</li>
+      <li><strong>35 points</strong> - Correct 3RD PLACE finisher</li>
+      <li><strong>45 points</strong> - Correct team in the FINAL</li>
+      <li><strong>80 points</strong> - Correct WORLD CHAMPION</li>
+    </ul>
+
+    <h2 class="rules-h2">🏆 WINNERS AND PRIZES</h2>
+    <p class="rules-p">Winners will be the 1st, 2nd, and 3rd place participants with the highest scores at the end of the World Cup.</p>
+    <p class="rules-p"><strong>Prize distribution (100% of collected fees):</strong></p>
+    <ul class="rules-ul">
+      <li><strong>60%</strong> - Champion (highest score at the end of the World Cup)</li>
+      <li><strong>20%</strong> - 2nd place (second highest score at the end of the World Cup)</li>
+      <li><strong>10%</strong> - 3rd place (third highest score at the end of the World Cup)</li>
+      <li><strong>8%</strong> - Highest score at the end of the group stage <strong>WITHOUT considering team classifications</strong> (only the 72 matches)</li>
+      <li><strong>2%</strong> - 100th place (one hundredth position at the end of the World Cup)</li>
+    </ul>
+
+    <h3 class="rules-h3">Tiebreaker Criteria</h3>
+    <p class="rules-p">In case of tied scores at the end, tiebreakers are applied in this order:</p>
+    <ol class="rules-ul">
+      <li>Correct World Champion prediction</li>
+      <li>Points from correctly predicting Finalists</li>
+      <li>Points from correctly predicting Semifinalists</li>
+      <li>Points from correctly predicting Quarterfinalists</li>
+      <li>Points from correctly predicting Round of 16 teams</li>
+      <li>Points from the 2nd phase (knockout stage)</li>
+      <li>Prize split (if tie persists)</li>
+    </ol>
+
+    <h2 class="rules-h2">💰 FEES</h2>
+    <p class="rules-p">• Entry fee: <strong>BRL 100.00 (approx. USD 20.00 / GBP 16.00)</strong></p>
+    <p class="rules-p">• Participants outside Brazil will have amounts converted to their local currency at the time of payment</p>
+    <p class="rules-p">• Final prize payments will be made in BRL or equivalent at the end of the competition (with equivalent value in BRL)</p>
+    <p class="rules-p">• Pool coordinators: <strong>Cassio Scomparin, Paulo Gravena, Fernando Fonseca, João Xavier</strong></p>
   </div>
 </div>
 
@@ -480,6 +634,22 @@ async function submit(){
     document.getElementById('bn').style.display='';
     document.getElementById('bp').style.display='none';
   }
+}
+
+// Função para alternar idioma nas regras
+function showLang(lang){
+  // Atualizar botões
+  const btns=document.querySelectorAll('.rules-lang-btn');
+  btns.forEach(b=>{
+    if((lang==='pt'&&b.textContent.includes('Português'))||(lang==='en'&&b.textContent.includes('English'))){
+      b.classList.add('active');
+    }else{
+      b.classList.remove('active');
+    }
+  });
+  // Mostrar conteúdo correto
+  document.getElementById('rules-pt').classList.toggle('active',lang==='pt');
+  document.getElementById('rules-en').classList.toggle('active',lang==='en');
 }
 
 render();

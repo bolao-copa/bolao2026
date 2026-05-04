@@ -436,6 +436,7 @@ const STEPS=[
   {t:'SEUS DADOS',c:()=>`
     <div class="fld"><label>Nome completo * <span style="font-size:10px;color:#999;font-weight:400">/ Full name</span></label><input type="text" placeholder="Seu nome" value="${D.nome||''}" oninput="D.nome=this.value"></div>
     <div class="fld"><label>E-mail * <span style="font-size:10px;color:#999;font-weight:400">/ Email</span></label><input type="email" placeholder="seu@email.com" value="${D.email||''}" oninput="D.email=this.value"></div>
+    <div class="fld"><label>Celular * <span style="font-size:10px;color:#999;font-weight:400">/ Mobile phone</span></label><input type="tel" placeholder="+55 11 98765-4321" value="${D.telefone||'+55 '}" oninput="D.telefone=this.value"></div>
     <div class="fld"><label>País <span style="font-size:10px;color:#999;font-weight:400">/ Country</span></label><input type="text" placeholder="Brasil" value="${D.pais||'Brasil'}" oninput="D.pais=this.value"></div>
     <div class="fld"><label>Coordenador do Bolão <span style="font-size:10px;color:#999;font-weight:400">/ Pool Coordinator</span></label><select style="width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;color:#1a1a1a;font-family:'Nunito',sans-serif;background:#fff;appearance:auto" onchange="D.admin=this.value"><option value="">— Selecione / Select —</option><option value="Cassio Scomparin" ${D.admin==='Cassio Scomparin'?'selected':''}>Cassio Scomparin</option><option value="Paulo Gravena" ${D.admin==='Paulo Gravena'?'selected':''}>Paulo Gravena</option><option value="Fernando Fonseca" ${D.admin==='Fernando Fonseca'?'selected':''}>Fernando Fonseca</option><option value="João Xavier" ${D.admin==='João Xavier'?'selected':''}>João Xavier</option></select></div>
     <div class="info-box">⚽ As <strong>3 caixas</strong> ao lado de cada jogo representam: vitória do time à <strong>esquerda (1)</strong> · <strong>empate (2)</strong> · vitória do time à <strong>direita (3)</strong>. Clique para selecionar — a caixa fica verde.<br><span style="font-size:10px;color:#006B35">The <strong>3 boxes</strong> next to each match: left team wins <strong>(1)</strong> · draw <strong>(2)</strong> · right team wins <strong>(3)</strong>. Click to select — the box turns green.</span></div>`},
@@ -477,6 +478,7 @@ function validate(){
   if(step===0){
     if(!D.nome||!D.nome.trim()) return MSG;
     if(!D.email||!D.email.trim()||!D.email.includes('@')) return MSG;
+    if(!D.telefone||!D.telefone.trim()||D.telefone.length<8) return MSG;
     if(!D.admin||!D.admin.trim()) return MSG;
     return null;
   }
@@ -556,6 +558,7 @@ function buildPayload(){
   // Dados pessoais
   payload['Nome']       = D.nome||'';
   payload['Email']      = D.email||'';
+  payload['Telefone']   = D.telefone||'';
   payload['_replyto']   = D.email||'';
   payload['_subject']   = 'Bolão Copa 2026 - Aposta recebida: '+(D.nome||'Apostador');
   payload['Pais']       = D.pais||'';

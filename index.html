@@ -439,6 +439,7 @@ const STEPS=[
     <div class="fld"><label>Celular * <span style="font-size:10px;color:#999;font-weight:400">/ Mobile phone</span></label><input type="tel" placeholder="+55 11 98765-4321" value="${D.telefone||'+55 '}" oninput="D.telefone=this.value"></div>
     <div class="fld"><label>País <span style="font-size:10px;color:#999;font-weight:400">/ Country</span></label><input type="text" placeholder="Brasil" value="${D.pais||'Brasil'}" oninput="D.pais=this.value"></div>
     <div class="fld"><label>Coordenador do Bolão <span style="font-size:10px;color:#999;font-weight:400">/ Pool Coordinator</span></label><select style="width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;color:#1a1a1a;font-family:'Nunito',sans-serif;background:#fff;appearance:auto" onchange="D.admin=this.value"><option value="">— Selecione / Select —</option><option value="Cassio Scomparin" ${D.admin==='Cassio Scomparin'?'selected':''}>Cassio Scomparin</option><option value="Paulo Gravena" ${D.admin==='Paulo Gravena'?'selected':''}>Paulo Gravena</option><option value="Fernando Fonseca" ${D.admin==='Fernando Fonseca'?'selected':''}>Fernando Fonseca</option><option value="João Xavier" ${D.admin==='João Xavier'?'selected':''}>João Xavier</option></select></div>
+    <div class="fld"><label>Grupo WhatsApp do Bolão? <span style="font-size:10px;color:#999;font-weight:400">/ Join WhatsApp group?</span></label><div style="display:flex;gap:12px;margin-top:4px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:400;padding:10px 16px;border:2px solid ${D.whatsapp==='S'?'#009B4D':'#e0e0e0'};border-radius:10px;flex:1;background:${D.whatsapp==='S'?'#E1F5EE':'#fff'};transition:all .12s"><input type="radio" name="whatsapp" value="S" ${D.whatsapp==='S'?'checked':''} onchange="D.whatsapp=this.value;render()" style="accent-color:#009B4D"> ✅ Sim / Yes</label><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:400;padding:10px 16px;border:2px solid ${D.whatsapp==='N'?'#E3001B':'#e0e0e0'};border-radius:10px;flex:1;background:${D.whatsapp==='N'?'#fff0f0':'#fff'};transition:all .12s"><input type="radio" name="whatsapp" value="N" ${D.whatsapp==='N'?'checked':''} onchange="D.whatsapp=this.value;render()" style="accent-color:#E3001B"> ❌ Não / No</label></div></div>
     <div class="info-box">⚽ As <strong>3 caixas</strong> ao lado de cada jogo representam: vitória do time à <strong>esquerda (1)</strong> · <strong>empate (2)</strong> · vitória do time à <strong>direita (3)</strong>. Clique para selecionar — a caixa fica verde.<br><span style="font-size:10px;color:#006B35">The <strong>3 boxes</strong> next to each match: left team wins <strong>(1)</strong> · draw <strong>(2)</strong> · right team wins <strong>(3)</strong>. Click to select — the box turns green.</span></div>`},
   ...GS.map(([g1,g2])=>({t:`GRUPOS ${g1} E ${g2}`,c:()=>groupHTML(g1)+groupHTML(g2)})),
   {t:'CLASSIFICAÇÃO DOS GRUPOS',c:()=>`<p class="note">Calculada automaticamente pelos seus resultados. Se dois times ficarem empatados em pontos, use o botão <strong>↕ trocar / swap</strong> para decidir a ordem.<br><span style="font-size:10px;color:#888">Automatically calculated from your results. If two teams are tied on points, use the <strong>↕ swap</strong> button to decide the order.</span></p>`+standHTML()},
@@ -446,7 +447,8 @@ const STEPS=[
   {t:'RODADA DE 32',c:()=>`<p class="note">As seleções vêm da sua classificação. Clique na que você acha que <strong>vence</strong> — fica verde e avança automaticamente ao próximo jogo.<br><span style="font-size:10px;color:#888">Teams come from your standings. Click the one you think <strong>wins</strong> — it turns green and advances automatically.</span></p>`+koSection(BD.r32,'r32','⚡ Rodada de 32 — 16 avos de final')},
   {t:'OITAVAS DE FINAL',c:()=>`<p class="note">Clique na seleção que avança em cada jogo.<br><span style="font-size:10px;color:#888">Click the team that advances in each match.</span></p>`+koSection(BD.r16,'r16','🔵 Oitavas de Final / Round of 16')},
   {t:'QUARTAS E SEMIFINAIS',c:()=>koSection(BD.qf,'qf','🟡 Quartas de Final / Quarter-Finals')+koSection(BD.sf,'sf','🔴 Semifinais / Semi-Finals')},
-  {t:'FINAL E CAMPEÃO',c:()=>koSection(BD.fin.slice(0,1),'fin','🥉 3° Lugar — 18/jul (Miami)')+koSection(BD.fin.slice(1),'fin','🏆 Grande Final — 19/jul (Nova York)')+podiumHTML()}
+  {t:'FINAL E CAMPEÃO',c:()=>koSection(BD.fin.slice(0,1),'fin','🥉 3° Lugar — 18/jul (Miami)')+koSection(BD.fin.slice(1),'fin','🏆 Grande Final — 19/jul (Nova York)')+podiumHTML()},
+  {t:'RESUMO E ENVIO',c:resumoHTML}
 ];
 
 document.getElementById('ct').addEventListener('click',function(e){
@@ -460,6 +462,54 @@ document.getElementById('ct').addEventListener('click',function(e){
   if(sw){swapPos(sw.dataset.swp,+sw.dataset.p1,+sw.dataset.p2);return;}
 });
 
+function gerarCodigo(){
+  if(D.codigoBolao) return D.codigoBolao;
+  const coordMap={'Cassio Scomparin':'CS','Paulo Gravena':'PG','Fernando Fonseca':'FF','João Xavier':'JX'};
+  const prefix=coordMap[D.admin]||'XX';
+  const parts=(D.nome||'').trim().split(/\s+/).filter(Boolean);
+  const nome2=(parts[0]||'XX').substring(0,2).toUpperCase().replace(/[^A-Z]/g,'X');
+  const sob2=(parts[parts.length-1]||'XX').substring(0,2).toUpperCase().replace(/[^A-Z]/g,'X');
+  const now=new Date();
+  const dd=String(now.getDate()).padStart(2,'0');
+  const hh=String(now.getHours()).padStart(2,'0');
+  const mm=String(now.getMinutes()).padStart(2,'0');
+  D.codigoBolao=`${prefix}-${nome2}${sob2}-${dd}${hh}${mm}`;
+  return D.codigoBolao;
+}
+
+function resumoHTML(){
+  const coord=D.admin||'—';
+  const coordEmailMap={'Cassio Scomparin':'cassio.scomparin@yahoo.com.br','Paulo Gravena':'pgravena@bol.com.br','Fernando Fonseca':'ffonseca71@gmail.com','João Xavier':'joaoxavier@ricardoxavier.com.br'};
+  const codigo=gerarCodigo();
+  const w=D['w_fin'],champ=w?gT(AM['fin'][w]):null;
+  return`
+  <p class="note" style="margin-bottom:1.25rem">Confira seus dados antes de enviar. Este é o seu número de protocolo.<br><span style="font-size:10px;color:#888">Please review your details before submitting. This is your registration code.</span></p>
+  <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem;text-align:center">
+    <div style="font-size:10px;color:#FFB81C;letter-spacing:.15em;font-weight:800;margin-bottom:10px">🎟️ SEU CÓDIGO DO BOLÃO / YOUR REGISTRATION CODE</div>
+    <div style="font-family:'Impact','Arial Black',sans-serif;font-size:36px;color:#fff;letter-spacing:.12em">${codigo}</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:8px">Guarde este código como comprovante · Keep this code as proof</div>
+  </div>
+  <div style="border:1.5px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:1rem">
+    <div style="background:#f7f7f7;padding:10px 16px;font-size:11px;font-weight:800;letter-spacing:.08em;color:#555;text-transform:uppercase">📋 Resumo / Summary</div>
+    ${rRow('👤 Nome / Name', D.nome||'—')}
+    ${rRow('📧 E-mail', D.email||'—')}
+    ${rRow('📱 Celular / Phone', D.telefone||'—')}
+    ${rRow('🌍 País / Country', D.pais||'Brasil')}
+    ${rRow('🤝 Coordenador', coord)}
+    ${rRow('💬 Grupo WhatsApp', D.whatsapp==='S'?'✅ Sim / Yes':'❌ Não / No')}
+    ${champ?rRow('🏆 Campeão / Champion',(FL[champ]||'🏳')+' '+champ):''}
+  </div>
+  <div style="background:#FFF8E1;border:1.5px solid #FFB81C;border-radius:10px;padding:12px 16px;font-size:12px;color:#856404;line-height:1.6">
+    ⚠️ Ao clicar em <strong>Enviar</strong>, suas apostas serão registradas e seu coordenador (<strong>${coord}</strong>) será notificado para confirmar seu pagamento.<br>
+    <span style="font-size:10px;color:#a07000">By clicking Submit, your bets will be registered and your coordinator will be notified to confirm your payment.</span>
+  </div>`;
+}
+
+function rRow(label,val){
+  return`<div style="display:flex;align-items:center;padding:10px 16px;border-top:1px solid #f0f0f0;gap:12px"><span style="font-size:12px;color:#888;min-width:160px;flex-shrink:0">${label}</span><span style="font-size:14px;color:#1a1a1a;font-weight:600">${val}</span></div>`;
+}
+
+
 function render(){
   const s=STEPS[step];
   document.getElementById('ct').innerHTML=`<div class="card"><h2 class="stitle">${s.t}</h2><div class="stitle-bar"></div>${s.c()}</div>`;
@@ -469,7 +519,6 @@ function render(){
   document.getElementById('pbadge').textContent=pct+'% preenchido / filled';
   document.getElementById('bp').style.display=step===0?'none':'';
   document.getElementById('bn').textContent=step===TOTAL-1?'✓ Enviar / Submit Bets':'Próximo / Next →';
-  
 }
 
 function validate(){
@@ -480,6 +529,7 @@ function validate(){
     if(!D.email||!D.email.trim()||!D.email.includes('@')) return MSG;
     if(!D.telefone||!D.telefone.trim()||D.telefone.length<8) return MSG;
     if(!D.admin||!D.admin.trim()) return MSG;
+    if(!D.whatsapp) return MSG;
     return null;
   }
   // Passos 1-6: grupos
@@ -563,6 +613,11 @@ function buildPayload(){
   payload['_subject']   = 'Bolão Copa 2026 - Aposta recebida: '+(D.nome||'Apostador');
   payload['Pais']       = D.pais||'';
   payload['Organizador']= D.admin||'';
+  payload['CodigoBolao']= gerarCodigo();
+  payload['WhatsApp']   = D.whatsapp==='S'?'Sim':'Não';
+  // Email do coordenador responsável (para Formspree CC)
+  const coordEmails={'Cassio Scomparin':'cassio.scomparin@yahoo.com.br','Paulo Gravena':'pgravena@bol.com.br','Fernando Fonseca':'ffonseca71@gmail.com','João Xavier':'joaoxavier@ricardoxavier.com.br'};
+  payload['_cc']        = coordEmails[D.admin]||'';
   // Fase de grupos: 72 jogos
   Object.keys(G).forEach(k=>{
     GMP[k].forEach(([a,b],i)=>{
@@ -617,11 +672,16 @@ async function submit(){
         <div style="font-size:72px;margin-bottom:1rem">🏆</div>
         <div style="font-family:'Impact',sans-serif;font-size:32px;color:#001F5C;letter-spacing:.06em;margin-bottom:.5rem">APOSTAS ENVIADAS!<br><span style="font-size:18px;letter-spacing:.04em">BETS SUBMITTED!</span></div>
         <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Obrigado, <strong>${D.nome||'apostador'}</strong>! Boa sorte no Bolão 2026! / Good luck! 🎉</p>
+        <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.25rem;margin-bottom:1rem;text-align:left">
+          <div style="font-size:10px;color:#FFB81C;margin-bottom:6px;letter-spacing:.1em;font-weight:800">🎟️ SEU CÓDIGO / YOUR CODE</div>
+          <div style="font-size:26px;font-weight:800;color:#fff;font-family:'Impact',sans-serif;letter-spacing:.1em">${gerarCodigo()}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:6px">Guarde este código como comprovante</div>
+        </div>
         <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;text-align:left">
           <div style="font-size:10px;color:#FFB81C;margin-bottom:6px;letter-spacing:.1em;font-weight:800">🏆 CAMPEÃO APOSTADO / YOUR CHAMPION</div>
           <div style="font-size:20px;font-weight:800;color:#fff">${champ?(FL[champ]||'🏳')+' '+champ:'Não preenchido'}</div>
         </div>
-        <p style="font-size:13px;color:#555;line-height:1.6">A organização receberá seu e-mail e confirmará para você sua inscrição.<br><span style="font-size:11px;color:#777">The organizer will receive your email and confirm your registration.</span></p>
+        <p style="font-size:13px;color:#555;line-height:1.6">Seu coordenador <strong>${D.admin}</strong> receberá sua aposta e confirmará o pagamento.<br><span style="font-size:11px;color:#777">Your coordinator will receive your bet and confirm payment.</span></p>
       </div>`;
     } else {
       throw new Error('Erro no envio');

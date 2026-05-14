@@ -647,16 +647,69 @@ function buildPayload(){
   return payload;
 }
 
-async function submit(){
-  const w=D['w_fin'],champ=w?gT(AM['fin'][w]):null;
+function telaConfirmacaoPrint(){
+  const codigo = gerarCodigo();
+  const nome = D.nome||'Apostador';
+  const coord = D.admin||'—';
+  document.getElementById('ct').innerHTML=`
+    <div class="card" style="text-align:center;padding:2rem 1rem">
+      <div style="font-size:48px;margin-bottom:.5rem">📸</div>
+      <div style="font-family:'Impact',sans-serif;font-size:26px;color:#001F5C;letter-spacing:.05em;margin-bottom:.25rem">ANTES DE CONFIRMAR</div>
+      <div style="font-size:12px;color:#888;margin-bottom:1.5rem;letter-spacing:.05em">BEFORE CONFIRMING</div>
 
-  // Mostrar tela de envio com loading
-  document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
-    <div style="font-size:48px;margin-bottom:1rem">⏳</div>
-    <div style="font-family:'Impact',sans-serif;font-size:24px;color:#001F5C;letter-spacing:.06em">Enviando apostas...</div>
-  </div>`;
+      <div style="background:#FFF8E1;border:2px solid #FFB81C;border-radius:14px;padding:1.25rem 1rem;margin-bottom:1.5rem;text-align:left">
+        <div style="font-size:14px;color:#7a5c00;line-height:1.8;font-weight:600">
+          📲 Faça um <strong>print desta tela</strong> e envie para seu coordenador.<br>
+          💰 Acerte com o coordenador a <strong>forma de pagamento</strong>.<br>
+          ✅ Sua aposta só será válida após <strong>confirmação do pagamento</strong>.
+        </div>
+        <div style="font-size:11px;color:#a07800;margin-top:10px;line-height:1.7;border-top:1px solid #FFB81C;padding-top:10px">
+          📲 Take a <strong>screenshot</strong> and send it to your coordinator.<br>
+          💰 Arrange the <strong>payment method</strong> with your coordinator.<br>
+          ✅ Your bet is only valid after <strong>payment confirmation</strong>.
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.5rem;margin-bottom:1rem">
+        <div style="font-size:10px;color:#FFB81C;letter-spacing:.15em;font-weight:800;margin-bottom:12px">🎟️ COMPROVANTE DE APOSTA / BET RECEIPT</div>
+        <div style="display:flex;flex-direction:column;gap:8px;text-align:left">
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:8px">
+            <span style="font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em">👤 Nome</span>
+            <span style="font-size:15px;font-weight:800;color:#fff">${nome}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:8px">
+            <span style="font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em">🤝 Coordenador</span>
+            <span style="font-size:13px;font-weight:700;color:#fff">${coord}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em">🎟️ Código</span>
+            <span style="font-size:22px;font-weight:800;color:#FFB81C;font-family:'Impact',sans-serif;letter-spacing:.1em">${codigo}</span>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:12px;color:#999;margin-bottom:1.5rem">
+        Após tirar o print, clique em <strong>Confirmar Envio</strong> para registrar sua aposta.<br>
+        <span style="font-size:11px">After taking the screenshot, click <strong>Confirm</strong> to register your bet.</span>
+      </p>
+
+      <button onclick="submitFinal()" style="width:100%;padding:16px;background:linear-gradient(135deg,#009B4D,#007a3d);border:none;border-radius:12px;color:#fff;font-size:16px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;letter-spacing:.05em">
+        ✅ Confirmar Envio / Confirm Submit
+      </button>
+    </div>`;
   document.getElementById('bn').style.display='none';
   document.getElementById('bp').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function submitFinal(){
+  const w=D['w_fin'],champ=w?gT(AM['fin'][w]):null;
+
+  // Loading
+  document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
+    <div style="font-size:48px;margin-bottom:1rem">⏳</div>
+    <div style="font-family:'Impact',sans-serif;font-size:24px;color:#001F5C;letter-spacing:.06em">Enviando apostas...<br><span style="font-size:14px">Sending bets...</span></div>
+  </div>`;
 
   try {
     const payload = buildPayload();
@@ -667,36 +720,53 @@ async function submit(){
     });
 
     if(resp.ok){
-      // Sucesso
+      // Tela de sucesso
       document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
         <div style="font-size:72px;margin-bottom:1rem">🏆</div>
-        <div style="font-family:'Impact',sans-serif;font-size:32px;color:#001F5C;letter-spacing:.06em;margin-bottom:.5rem">APOSTAS ENVIADAS!<br><span style="font-size:18px;letter-spacing:.04em">BETS SUBMITTED!</span></div>
-        <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Obrigado, <strong>${D.nome||'apostador'}</strong>! Boa sorte no Bolão 2026! / Good luck! 🎉</p>
+        <div style="font-family:'Impact',sans-serif;font-size:28px;color:#001F5C;letter-spacing:.06em;margin-bottom:.5rem">APOSTA REGISTRADA!<br><span style="font-size:16px;letter-spacing:.04em;color:#009B4D">BET REGISTERED!</span></div>
+        <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Obrigado, <strong>${D.nome||'apostador'}</strong>! Boa sorte no Bolão 2026! 🎉<br><span style="font-size:12px;color:#999">Good luck!</span></p>
+
         <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.25rem;margin-bottom:1rem;text-align:left">
           <div style="font-size:10px;color:#FFB81C;margin-bottom:6px;letter-spacing:.1em;font-weight:800">🎟️ SEU CÓDIGO / YOUR CODE</div>
           <div style="font-size:26px;font-weight:800;color:#fff;font-family:'Impact',sans-serif;letter-spacing:.1em">${gerarCodigo()}</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:6px">Guarde este código como comprovante</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:6px">Guarde este código como comprovante · Keep this as proof</div>
         </div>
-        <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.25rem;margin-bottom:1.5rem;text-align:left">
+
+        <div style="background:#E1F5EE;border:1.5px solid #009B4D;border-radius:12px;padding:1rem;margin-bottom:1rem;text-align:left">
+          <div style="font-size:13px;color:#006B35;line-height:1.7;font-weight:600">
+            ⏳ Sua aposta está <strong>pendente de confirmação</strong>.<br>
+            👤 Seu coordenador <strong>${D.admin}</strong> irá validar após confirmar o pagamento.<br>
+            📲 Você já enviou o print para ele?
+          </div>
+          <div style="font-size:11px;color:#007a3d;margin-top:8px;border-top:1px solid #009B4D;padding-top:8px">
+            ⏳ Your bet is <strong>pending confirmation</strong>.<br>
+            👤 Your coordinator will validate it after payment confirmation.
+          </div>
+        </div>
+
+        <div style="background:linear-gradient(135deg,#001040,#001F5C);border-radius:14px;padding:1.25rem;margin-bottom:0;text-align:left">
           <div style="font-size:10px;color:#FFB81C;margin-bottom:6px;letter-spacing:.1em;font-weight:800">🏆 CAMPEÃO APOSTADO / YOUR CHAMPION</div>
-          <div style="font-size:20px;font-weight:800;color:#fff">${champ?(FL[champ]||'🏳')+' '+champ:'Não preenchido'}</div>
+          <div style="font-size:18px;font-weight:800;color:#fff">${champ?(FL[champ]||'🏳')+' '+champ:'Não preenchido'}</div>
         </div>
-        <p style="font-size:13px;color:#555;line-height:1.6">Seu coordenador <strong>${D.admin}</strong> receberá sua aposta e confirmará o pagamento.<br><span style="font-size:11px;color:#777">Your coordinator will receive your bet and confirm payment.</span></p>
       </div>`;
     } else {
       throw new Error('Erro no envio');
     }
   } catch(err){
-    // Erro — mostrar mensagem e permitir tentar de novo
     document.getElementById('ct').innerHTML=`<div class="card" style="text-align:center;padding:3rem 1rem">
       <div style="font-size:48px;margin-bottom:1rem">❌</div>
-      <div style="font-family:'Impact',sans-serif;font-size:24px;color:#E3001B;margin-bottom:1rem">Erro ao enviar</div>
-      <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Verifique sua conexão e tente novamente.</p>
-      <button onclick="step=TOTAL-1;render()" style="padding:12px 28px;border:2px solid #001F5C;border-radius:10px;background:transparent;cursor:pointer;font-size:13px;color:#001F5C;font-weight:800;font-family:'Nunito',sans-serif">← Tentar novamente</button>
+      <div style="font-family:'Impact',sans-serif;font-size:24px;color:#E3001B;margin-bottom:1rem">Erro ao enviar<br><span style="font-size:14px">Error sending</span></div>
+      <p style="font-size:14px;color:#666;margin-bottom:1.5rem">Verifique sua conexão e tente novamente.<br><span style="font-size:12px;color:#999">Check your connection and try again.</span></p>
+      <button onclick="step=TOTAL-1;render()" style="padding:12px 28px;border:2px solid #001F5C;border-radius:10px;background:transparent;cursor:pointer;font-size:13px;color:#001F5C;font-weight:800;font-family:'Nunito',sans-serif">← Tentar novamente / Try again</button>
     </div>`;
     document.getElementById('bn').style.display='';
     document.getElementById('bp').style.display='none';
   }
+}
+
+async function submit(){
+  // Primeira etapa: mostrar tela de print
+  telaConfirmacaoPrint();
 }
 
 // Função para alternar idioma nas regras

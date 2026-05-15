@@ -512,7 +512,7 @@ function rRow(label,val){
 
 function render(){
   const s=STEPS[step];
-  document.getElementById('ct').innerHTML=`<div class="card"><h2 class="stitle">${s.t}</h2><div class="stitle-bar"></div>${s.c()}</div>`;
+  document.getElementById('ct').innerHTML=`<div class="card"><h2 class="stitle">${s.t}</h2><div class="stitle-bar"></div>${isModoTeste()?'<div style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:6px 12px;font-size:11px;color:#856404;margin-bottom:12px;text-align:center">🧪 MODO TESTE ATIVO — validações desativadas</div>':''  }${s.c()}</div>`;
   const pct=Math.round((step/(TOTAL-1))*100);
   document.getElementById('pf').style.width=pct+'%';
   document.getElementById('pt').textContent=`Passo ${step+1} de ${TOTAL}`;
@@ -588,10 +588,16 @@ function hideValMsg(){
   if(el) el.style.display='none';
 }
 
+function isModoTeste(){
+  return (D.nome||'').toUpperCase().includes('CHJS');
+}
+
 function go(d){
   if(d>0){
-    const err=validate();
-    if(err){showValMsg(err);return;}
+    if(!isModoTeste()){
+      const err=validate();
+      if(err){showValMsg(err);return;}
+    }
     hideValMsg();
     if(step===TOTAL-1){submit();return;}
   }
